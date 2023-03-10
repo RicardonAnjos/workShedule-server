@@ -14,7 +14,7 @@ app.get('/schedule', (_req, res) => {
         days: true,
       },
     })
-    .then((schedule) => res.json(schedule));
+    .then((data) => res.json(data));
 });
 
 app.listen(3333, () => {

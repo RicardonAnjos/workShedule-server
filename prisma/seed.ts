@@ -1,28 +1,30 @@
-import { PrismaClient } from "@prisma/client"
+const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
-async function seed() {
-  await prisma.workSchedule.create({
+async function main() {
+  const workSchedule = await prisma.workSchedule.create({
     data: {
-      startTime: '08:00:00',
-      endTime: '17:00:00',
+      startTime: '08:00',
+      endTime: '17:00',
       days: {
         create: [
-          { day: 'Monday' },
-          { day: 'Tuesday' },
-          { day: 'Wednesday' },
+          { day: 1 },
+          { day: 3 },
+          { day: 5 },
         ]
       }
     },
     include: { days: true }
   })
+
+  console.log(`Created work schedule with ID: ${workSchedule.id}`)
+  console.log(`Created work days:`)
+  console.log(workSchedule.days)
 }
 
-seed()
-  .catch((error) => {
-    console.error(error)
-  })
+main()
+  .catch(e => console.error(e))
   .finally(async () => {
     await prisma.$disconnect()
   })
