@@ -19,7 +19,7 @@ model WorkSchedule {
 
 model WeekDay {
   id         String       @id @default(uuid())
-  day        String
+  day        Int
   scheduleId String
   schedule   WorkSchedule @relation(fields: [scheduleId], references: [id])
 }
