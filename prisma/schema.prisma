@@ -9,3 +9,17 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model WorkSchedule {
+  id        String    @id @default(uuid())
+  startTime String
+  endTime   String
+  days      WeekDay[]
+}
+
+model WeekDay {
+  id         String       @id @default(uuid())
+  day        String
+  scheduleId String
+  schedule   WorkSchedule @relation(fields: [scheduleId], references: [id])
+}
