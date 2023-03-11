@@ -1,9 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+
+
 import { PrismaClient } from '@prisma/client';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
+
 
 const prisma = new PrismaClient();
 
@@ -11,7 +16,11 @@ app.get('/schedule', async (_req, res) => {
   try {
     const data = await prisma.workSchedule.findMany({
       include: {
-        days: true,
+        days: {
+          select: {
+            day: true,
+          },
+        },
       },
     });
     res.json(data);
@@ -24,19 +33,28 @@ app.get('/schedule', async (_req, res) => {
 
 app.put('/schedule/:id', async (req, res) => {
   const { id } = req.params;
-  const { startTime, endTime } = req.body;
-
+  const { startTime, endTime, days } = req.body;
+  
   try {
-    await prisma.workSchedule.update({
+    const data = await prisma.workSchedule.update({
       where: { id },
-      data: { startTime, endTime },
+      data: {
+        startTime,
+        endTime,
+        days: {
+          set: days,
+        },
+      },
     });
-    res.status(204).send();
+    res.json(data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Failed to update work schedule.' });
   }
 });
+
+
+
 
 
 app.listen(3333, () => {
