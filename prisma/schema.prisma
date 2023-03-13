@@ -11,15 +11,8 @@ datasource db {
 }
 
 model WorkSchedule {
-  id        String    @id @default(uuid())
-  startTime String
-  endTime   String
-  days      WeekDay[]
-}
-
-model WeekDay {
-  id         String       @id @default(uuid())
-  day        Int
-  scheduleId String
-  schedule   WorkSchedule @relation(fields: [scheduleId], references: [id])
+  id        String @id @default(uuid())
+  startTime Int
+  endTime   Int
+  days      String
 }
