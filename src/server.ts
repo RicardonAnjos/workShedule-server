@@ -12,9 +12,34 @@ app.use(cors());
 
 const prisma = new PrismaClient();
 
+app.post('/schedule', async (req, res) => {
+  const body: any = req.body;
+
+  const schedule = await prisma.workSchedule.create({
+    data: {
+      startTime: body.startTime,
+      endTime: body.endTime,
+      day: body.day
+    },
+  });
+
+  res.json(schedule);
+});
+
 app.get('/schedule', async (_req, res) => {
   const schedules = await prisma.workSchedule.findMany();
   res.json(schedules);
+});
+
+app.get('/schedule/:id', async (req, res) => {
+  const sId = req.params.id;
+  const schedule = await prisma.workSchedule.findUnique({
+    where: {
+      id: sId,
+    },
+  });
+
+  res.json(schedule);
 });
 
 
@@ -29,7 +54,6 @@ app.put('/schedule/:id', async (req, res) => {
     data: {
       startTime: body.startTime,
       endTime: body.endTime,
-      days: body.days.join(','),
     },
   });
 

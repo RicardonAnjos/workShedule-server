@@ -12,7 +12,7 @@ datasource db {
 
 model WorkSchedule {
   id        String @id @default(uuid())
-  startTime Int
-  endTime   Int
-  days      String
+  startTime String
+  endTime   String
+  day       String
 }
