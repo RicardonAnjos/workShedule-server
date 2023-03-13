@@ -13,21 +13,8 @@ app.use(cors());
 const prisma = new PrismaClient();
 
 app.get('/schedule', async (_req, res) => {
-  try {
-    const data = await prisma.workSchedule.findMany({
-      include: {
-        days: {
-          select: {
-            day: true,
-          },
-        },
-      },
-    });
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to fetch work schedules.' });
-  }
+  const schedules = await prisma.workSchedule.findMany();
+  res.json(schedules);
 });
 
 
