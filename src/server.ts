@@ -32,31 +32,24 @@ app.get('/schedule', async (_req, res) => {
 
 
 app.put('/schedule/:id', async (req, res) => {
-  const { id } = req.params;
-  const { startTime, endTime, days } = req.body;
-  
-  try {
-    const data = await prisma.workSchedule.update({
-      where: { id },
-      data: {
-        startTime,
-        endTime,
-        days: {
-          set: days,
-        },
-      },
-    });
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Failed to update work schedule.' });
-  }
+  const sId = req.params.id;
+  const body: any = req.body;
+
+  const updatedSchedule = await prisma.workSchedule.update({
+    where: {
+      id: sId,
+    },
+    data: {
+      startTime: body.startTime,
+      endTime: body.endTime,
+      days: body.days.join(','),
+    },
+  });
+
+  res.json(updatedSchedule);
 });
 
 
-
-
-
-app.listen(3333, () => {
-  console.log('Server started on port 3333!');
+app.listen(5555, () => {
+  console.log('Server started on port 5555!');
 });
