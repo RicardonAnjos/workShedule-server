@@ -57,7 +57,7 @@ app.put('/schedule/:id', async (req, res) => {
     },
   });
 
-  res.json(updatedSchedule);
+  res.send(updatedSchedule);
 });
 
 
